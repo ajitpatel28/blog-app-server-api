@@ -23,9 +23,9 @@ const getUserById = async (req, res) => {
         id: Number(id),
       },
       select: {
+        id : true,
         username: true,
-        email: true,
-        likes: true
+        email: true
       }
     })
     res.status(200).json(users)
