@@ -13,23 +13,6 @@ const getAllLikes = async (req, res) => {
   }
 }
 
-const getLikeById = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const likes = await prisma.like.findUnique({
-      where: {
-        id: Number(id),
-      },
-      select: {
-        title: true,
-        content: true,
-      }
-    })
-    res.json(likes)
-  } catch (error) {
-    return res.status(500).send(error.message)
-  }
-}
 
 const createLike = async (req, res) => { 
   try {
