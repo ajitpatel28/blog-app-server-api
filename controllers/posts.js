@@ -93,17 +93,28 @@ const getPostById = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const post = await prisma.post.create({
-      data: {
-        ...req.body,
-        
+    const { title, content } = req.body;
+    const user = await prisma.user.findUnique({
+      where: {
+        username: req.user.username
       }
     })
-    res.status(200).json(post)
+    const post = await prisma.post.create({
+      data: {
+        title,
+        content,
+        user: {
+          connect: {
+            id: user.id
+          }
+        }
+      }});
+    
+    return res.status(200).json(post)
   } catch (error) {
     return res.status(500).json({ error: error.message })
   }
-}
+};
 
 const updatePost = async (req, res) => {
   try {
@@ -137,7 +148,7 @@ const deletePost = async (req, res) => {
       where: { id: Number(id) }
     });
     if (deleted) {
-      return res.status(204).send('Post deleted');
+      return res.status(204).json({Msg:"Post deleted successfully"});
     }
     throw new Error('Post not found');
   } catch (error) {
