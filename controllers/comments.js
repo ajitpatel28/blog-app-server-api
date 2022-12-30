@@ -41,10 +41,15 @@ const getCommentById = async (req, res) => {
 
 const createComment = async (req, res) => { 
   try {
+    const { postId } = req.body;
+    const Post = await prisma.post.findUnique({ where: { id:postId } });
     const comment = await prisma.comment.create({
       data: {
-        ...req.body,
-      }
+        content: req.body.content,
+        user: { connect: { id: req.user.id } },
+        post: { connect: { id: Post.id } }
+
+      },
     })
     res.status(200).json(comment)
   } catch (error) {
@@ -57,7 +62,10 @@ const updateComment = async (req, res) => {
     const { id } = req.params;
     const comment = await prisma.comment.update({
       where: { id: Number(id) },
-      data: req.body
+      data: {
+        content: req.body.content
+
+      }
     });
     if (comment) {
       const updatedComment = await prisma.comment.findUnique({
@@ -65,8 +73,7 @@ const updateComment = async (req, res) => {
           id: Number(id)
         },
         select: {
-          commentname: true,
-          email: true
+          content:true
         }
       });
       return res.status(200).json(updatedComment)
