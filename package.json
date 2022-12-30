@@ -4,10 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "generate": "npx prisma generate",
-    "deploy": "npx prisma migrate deploy",
     "dev": "nodemon server.js",
-    "build": "npm run generate",
     "start": "node server.js"
   },
   "keywords": [],
