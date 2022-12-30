@@ -68,7 +68,6 @@ const deleteLike = async (req, res) => {
 
 module.exports = {
   getAllLikes,
-  getLikeById,
   createLike,
   updateLike,
   deleteLike
